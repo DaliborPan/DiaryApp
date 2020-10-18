@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+    diary-api:
+        depends_on:
+            - db
+        build: ./src/diary-api
+        image: diary-api:latest
+        ports:
+            - 8080:8080
+        restart: always
+
+    diary-frontend:
+        depends_on:
+            - diary-api
+        build: ./src/diary
+        image: diary:latest
+        ports:
+            - 80:80
+        restart: always
+
+    db:
+        image: postgres:alpine
+        restart: always
+        ports:
+            - 5432:5432
+        environment:
+            POSTGRES_PASSWORD: password
+    
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+            - 8081:8080
